@@ -1,9 +1,14 @@
+import os
+from string import Template
+
 from aqt import mw
 from aqt.utils import showInfo
 from aqt.qt import QAction
+
 # utils has been added to sys.path
-from utils import getAllNoteTypes, NOTE_TYPES, getCardTypesFromNoteType
-from .html import verb, vocab, grammar
+from utils import NOTE_TYPES, getCardTypesFromNoteType, TENSE_MAP
+from .html import common
+
 
 
 def update_templates():
@@ -21,84 +26,75 @@ def update_templates():
 
     showInfo("Done update_templates")
     
+
 def update_card_template(tmpl):
     try:
         card_name = tmpl.get("name")
-        # VERB CARDS
+        # set type
         if "verb" in card_name:
-            if "eng_to_kr" in card_name:
-                # showInfo(f"Updating card: {card_name}")
-                tmpl["qfmt"] = verb.eng_to_kr.front(card_name)
-                tmpl["afmt"] = verb.eng_to_kr.back(card_name)
-            else:
-                # showInfo(f"Updating card: {card_name}")
-                tmpl["qfmt"] = verb.kr_to_eng.front(card_name)
-                tmpl["afmt"] = verb.kr_to_eng.back(card_name)
-        # GRAMMAR and VOCAB cards
+            type = "verb"
+        elif "grammar" in card_name:
+            type = "grammar"
         else:
-            # update GRAMMAR cards
-            if "grammar" in card_name:
-                tmpl["qfmt"] = grammar.front()
-                tmpl["afmt"] = grammar.back()
-            # update basic VOCAB cards
-            else: 
-                if "eng_to_kr" in card_name:
-                    # showInfo(f"Updating card: {card_name}")
-                    tmpl["qfmt"] = vocab.eng_to_kr.front()
-                    tmpl["afmt"] = vocab.eng_to_kr.back()
-                else:
-                    # showInfo(f"Updating card: {card_name}")
-                    tmpl["qfmt"] = vocab.kr_to_eng.front()
-                    tmpl["afmt"] = vocab.kr_to_eng.back()
-    except KeyError:
-        showInfo("Error: A template in notetype ??? has no name!!")
+            type = "vocab"
+
+        # set eng_to_kr (note that it will be set to 0 for grammar cards even though its also 
+        # not kr_to_eng but this is accounted for in "create_file_path" function)
+        eng_to_kr = 1 if "eng_to_kr" in card_name else 0
+
+        cur_dir = os.path.dirname(__file__)
+        tmpl["qfmt"] = read_html(1, cur_dir, card_name, type, eng_to_kr)
+        tmpl["afmt"] = read_html(0, cur_dir, card_name, type, eng_to_kr)
+
+    except KeyError as e:
+        showInfo(e)
 
 
-def update_templates_old():
-    card_types = getAllNoteTypes()
-    
-    for tmpl in card_types.get("tmpls", []):
-        try:
-            card_name = tmpl.get("name")
-            print("working on card : " + card_name)
-            # VERB CARDS
-            if "verb" in card_name:
-                if "eng_to_kr" in card_name:
-                    # showInfo(f"Updating card: {card_name}")
-                    tmpl["qfmt"] = verb.eng_to_kr.front(card_name)
-                    tmpl["afmt"] = verb.eng_to_kr.back(card_name)
-                else:
-                    # showInfo(f"Updating card: {card_name}")
-                    tmpl["qfmt"] = verb.kr_to_eng.front(card_name)
-                    tmpl["afmt"] = verb.kr_to_eng.back(card_name)
-            # GRAMMAR and VOCAB cards
-            else:
-                # update GRAMMAR cards
-                if "grammar" in card_name:
-                    tmpl["qfmt"] = grammar.front()
-                    tmpl["afmt"] = grammar.back()
-                # update basic VOCAB cards
-                else: 
-                    if "eng_to_kr" in card_name:
-                        # showInfo(f"Updating card: {card_name}")
-                        tmpl["qfmt"] = vocab.eng_to_kr.front()
-                        tmpl["afmt"] = vocab.eng_to_kr.back()
-                    else:
-                        # showInfo(f"Updating card: {card_name}")
-                        tmpl["qfmt"] = vocab.kr_to_eng.front()
-                        tmpl["afmt"] = vocab.kr_to_eng.back()
-        except KeyError:
-            showInfo("Error: A template in notetype ??? has no name!!")
-            continue
-    # save templates - same as clicking "save" button in template editor gui
-    try:
-        mw.col.models.save(note_type)
-    except Exception:
-        showInfo("Error: cannot save updates to templates!!!")
+def read_html(side, cur_dir, card_name, type, eng_to_kr):
+    file_path = create_file_path(type, eng_to_kr, side)
+    full_path = os.path.join(cur_dir, file_path)
 
-    showInfo("Done update_templates")
+    # Read the HTML file
+    with open(full_path, 'r', encoding='utf-8') as file:
+        template = Template(file.read())
+        # content = file.read()
+
+    html_var = {}
+    if type == "verb":
+        html_var = {
+            'card_type': card_name,
+            'eng_tense': TENSE_MAP[card_name] + 'English',
+            'kr_tense': TENSE_MAP[card_name],
+            'audio': common.audio(card_name),
+            'more_info': common.more_info(),
+            'duplicateScript': common.duplicateScript(card_name)
+        }
+
+    return template.safe_substitute(html_var)
 
 
+def create_file_path(type, eng_to_kr, front):
+    lang = "eng_to_kr" if eng_to_kr==1 else "kr_to_eng"
+    side = "front" if front==1 else "back"
+    file_path = "html\\" + type + "\\" + (type if type=="grammar" else lang)  + "_" + side + ".html"
+    return file_path
+
+
+def html_var_sub(card_name, content):
+    html_var = {
+        'card_type': card_name,
+        'eng_tense': TENSE_MAP[card_name] + 'English',
+        'kr_tense': TENSE_MAP[card_name],
+        'audio': common.audio(card_name),
+        'more_info': common.more_info(),
+        'dup_script': common.duplicateScript(card_name)
+    }
+
+    for key, value in html_var.items():
+        content = content.replace(f'{key}', value)
+        # showInfo("Replacing {" + key + "} with " + value + "\n\nNew content: \n" + content)
+
+    return content
 
 
 action = QAction("Update Templates", mw)

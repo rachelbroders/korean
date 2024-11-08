@@ -2,9 +2,6 @@ import subprocess
 import os
 import threading
 
-from googleapiclient.discovery import build
-from google.oauth2 import service_account
-
 from aqt import mw
 from aqt.utils import showInfo
 
@@ -135,15 +132,3 @@ def runScriptInVenv(sync_path, python_exe, expected_errors, callback=None):
     thread = threading.Thread(target=subprocess_run)
     thread.start()
 
-
-# Google Sheets API setup
-def get_sheet(): 
-    credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
-    service = build('sheets', 'v4', credentials=credentials)
-    sheet = service.spreadsheets()
-    if sheet:
-        print("sheet opened.")
-    return sheet
-
-class ScriptError(Exception):
-    pass

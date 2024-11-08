@@ -1,0 +1,10 @@
+{
+    "name": "Sync Anki To Sheets",
+    "mod": 1612137600,
+    "ver": 1,
+    "src": "init.py",
+    "author": "Rachel Broders",
+    "description": "Description of your add-on.",
+    "addonId": null
+}
+

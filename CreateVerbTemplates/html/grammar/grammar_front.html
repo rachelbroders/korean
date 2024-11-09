@@ -1,40 +1,41 @@
-<!-- Templates aligned to the right -->
- <!-- Templates aligned to the right -->
-  <!-- Templates aligned to the right -->
-
 <div class="scrollable-content" onclick="toggleContent(this)">
-    <div class="clickable-title">
-      <div class="title-templates-container" style="display: flex; align-items: center;">
-        <!-- Title aligned to the left -->
-        <div class="title-left">
-          <p class="g_title">{{title}}</p>
+
+    <div class="container">
+        <div class="row row-1">
+            <p class="title_text">{{title}}</p>
         </div>
-        <div class="title-left">
-          <p class="g_title">{{title}}</p>
+
+        
+        <div class="row row-2">
+            {{#translation}}<div><p class="translation_text">{{translation}}</p></div>{{/translation}} 
+            <div class="template_container">
+                {{#template1}}<div class="template_box"><td>{{template1}}</td></div>{{/template1}}
+                {{#template2}}<div class="template_box"><td>{{template2}}</td></div>{{/template2}}
+                {{#template3}}<div class="template_box"><td>{{template3}}</td></div>{{/template3}}
+                {{#template4}}<div class="template_box"><td>{{template4}}</td></div>{{/template4}}
+                {{#template5}}<div class="template_box"><td>{{template5}}</td></div>{{/template5}}
+            </div>
+             
         </div>
-      
-        <!-- Templates aligned to the right -->
-        <div>
-          <table>
-            <tr>
-                {{#template1}}<td>{{template1}}</td>{{/template1}}
-                {{#template2}}<td>{{template2}}</td>{{/template2}}
-                {{#template3}}<td>{{template3}}</td>{{/template3}}
-                {{#template4}}<td>{{template4}}</td>{{/template4}}
-                {{#template5}}<td>{{template5}}</td>{{/template5}}
-            </tr>
-          </table>
-        </div>
-      </div>
-  
-      <p style="text-align: center;">
-        <strong>Translation:</strong><br>{{translation}}
-      </p>
+        
     </div>
+
   
-      <p><strong>Formality/Politeness:</strong></br>  {{formalPolite}}</p></br>
-      <p><strong>Description:</strong></br>  {{description}}</p></br>
-      <p><strong>Exceptions:</strong></br>  {{exceptions}}</p></br>
-      <p><strong>Examples:</strong></br>  {{exampleSentences}}</p></br>
-      <p><strong>Additional Notes:</strong></br> {{additionalNotes}}</p></br>
-  </div>
+    
+    <p class="section_text"><strong>Description:</strong></p>
+    <p class="reg_text">{{description}}</p>
+    </br>
+    <p class="section_text"><strong>Examples:</strong></p>
+    <p class="reg_text">{{exampleSentences}}</p>
+    </br>
+    <p class="section_text"><strong>Exceptions:</strong></p>
+    <p class="reg_text">{{exceptions}}</p>
+    </br>
+    <p class="section_text"><strong>Formality/Politeness:</strong></p>
+    <p class="reg_text">{{formalPolite}}</p>
+    </br>
+    <p class="section_text"><strong>Additional Notes:</strong></p>
+    <p class="reg_text">{{additionalNotes}}</p>
+
+</div>
+<link rel="stylesheet" href="../style.css">

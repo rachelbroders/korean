@@ -1,0 +1,90 @@
+.scrollable-content {
+    overflow-y: auto;  /* Enables vertical scrolling */
+    padding: 10px;     /* Optional: Adds some padding */
+    border: 1px solid #ccc; /* Optional: Adds a border */
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: visible;
+}
+
+p {
+  font-family: Roboto, sans-serif;
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 28px;
+}
+
+body {
+  -webkit-text-size-adjust: 100%; /* Prevents text       scaling on iOS */
+}
+
+.container {
+  display: flex;
+  flex-direction: column; /* Stack the rows vertically */
+  gap: 20px; /* Add some space between rows */
+  border-bottom: 1px solid #ddd;
+}
+
+.row {
+  display: flex;
+  gap: 10px; /* Add space between items inside the row */
+}
+
+.row-1 {
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.row-2 {
+  justify-content: center; /* Align item to the left */
+}
+
+.title_text {
+  font-family: Roboto, sans-serif;
+  font-size: large;
+  padding: 10px 10px 10px 10px;
+  justify-content: center;
+}
+
+.reg_text{
+    font-size: medium;
+}
+
+.section_text {
+    font-size: medium;
+}
+
+.translation_text{
+    font-style: italic;
+    font-size: medium;
+}
+
+.template_container {
+  display: flex;          /* Use flexbox */
+  flex-wrap: wrap;        /* Allow items to wrap onto new lines */
+  justify-content: flex-start; /* Align items to the left */
+  width: 50vw;            /* Container takes up 50% of the viewport width */
+  padding: 10px;
+  box-sizing: border-box; /* Include padding in the width/height calculation */
+}
+  
+  /* Style for the individual boxes */
+.template_box {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+  font-family: Roboto, sans-serif;
+  font-size: small;
+  font-weight: bold;
+  color: black;
+  display: inline-block;  /* Ensure boxes take up only as much space as their content */
+  width: 100%;             
+  white-space: nowrap;     /* Prevent text wrapping inside the box */
+  background-color: rgb(189, 189, 189);
+}
+
+.template_container::after {
+  content: '';
+  display: block;
+  visibility: hidden;
+  width: max-content;  /* Ensures the width is based on the longest text */
+}

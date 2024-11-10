@@ -67,7 +67,7 @@ DEFAULT_VENV_EXE = os.path.abspath(os.path.join(current_directory, venv_name, 'S
 
 def getKoreanVocabNotes():
     # Get the model (note type) ID
-    model = getKoreanVocabNoteType(VOCAB)
+    model = getNoteType(VOCAB)
     model_id = model['id']
 
     # Get all notes of the specified note type
@@ -86,17 +86,13 @@ def getCardTypesFromNoteType(note_type):
     
     return model
 
-def getAllNoteTypes():
-    card_types = []
-    # Get the model (note type) ID
-    for t in learning_types:
-        model = mw.col.models.byName(NOTE_TYPES[t])
-        if not model:
-            showInfo(f"Note type '{NOTE_TYPES[t]}' not found.")
-            break
-        card_types = card_types + model
-    print("Card types: " + card_types)
-    return card_types
+
+def getNoteType(note_name):
+    model = mw.col.models.byName(note_name)
+    if not model:
+        showInfo(f"Note type '{note_name}' not found.")
+    return model
+
 
 def runScriptInVenv(sync_path, python_exe, expected_errors, callback=None):
     def subprocess_run():

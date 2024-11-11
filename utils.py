@@ -13,30 +13,26 @@ NOTE_TYPES = [VOCAB, GRAMMAR]
 CSV_FILE ='AnkiDatabase.csv'
 
 DECK_MAP = {
-    'Verb': {
-        'eng_to_kr_verb_present': 'Verbs_ENG->KR::present',
-        'eng_to_kr_verb_past': 'Verbs_ENG->KR::past',    
-        'eng_to_kr_verb_future': 'Verbs_ENG->KR::future',     
-        'eng_to_kr_verb_request_tense': 'Verbs_ENG->KR::request',    
-        'eng_to_kr_verb_negative_request_tense': 'Verbs_ENG->KR::negative_request',   
-        'eng_to_kr_verb_suggestion_tense': 'Verbs_ENG->KR::suggestion', 
-        'eng_to_kr_verb_negation_past_tense': 'Verbs_ENG->KR::negation_past',
-        'eng_to_kr_verb_negation_present_tense': 'Verbs_ENG->KR::negation_present',
-        'eng_to_kr_verb_negation_future_tense': 'Verbs_ENG->KR::negation_future',
-        'kr_to_eng_verb_present': 'Verbs_KR->ENG::present',
-        'kr_to_eng_verb_past': 'Verbs_KR->ENG::past',
-        'kr_to_eng_verb_future': 'Verbs_KR->ENG::future',
-        'kr_to_eng_verb_request_tense': 'Verbs_KR->ENG::request',
-        'kr_to_eng_verb_negative_request_tense': 'Verbs_KR->ENG::negative_request',
-        'kr_to_eng_verb_suggestion_tense': 'Verbs_KR->ENG::suggestion',
-        'kr_to_eng_verb_negation_past_tense': 'Verbs_KR->ENG::negation_past',
-        'kr_to_eng_verb_negation_present_tense': 'Verbs_KR->ENG::negation_present',
-        'kr_to_eng_verb_negation_future_tense': 'Verbs_KR->ENG::negation_future',
-    },
-    '': {
-        'eng_to_kr': 'Korean_Vocab_ENG->KR',
-        'kr_to_eng': 'Korean_Vocab_KR->ENG',
-    }
+    'eng_to_kr_verb_present': 'Verbs_ENG->KR::present',
+    'eng_to_kr_verb_past': 'Verbs_ENG->KR::past',    
+    'eng_to_kr_verb_future': 'Verbs_ENG->KR::future',     
+    'eng_to_kr_verb_request_tense': 'Verbs_ENG->KR::request',    
+    'eng_to_kr_verb_negative_request_tense': 'Verbs_ENG->KR::negative_request',   
+    'eng_to_kr_verb_suggestion_tense': 'Verbs_ENG->KR::suggestion', 
+    'eng_to_kr_verb_negation_past_tense': 'Verbs_ENG->KR::negation_past',
+    'eng_to_kr_verb_negation_present_tense': 'Verbs_ENG->KR::negation_present',
+    'eng_to_kr_verb_negation_future_tense': 'Verbs_ENG->KR::negation_future',
+    'kr_to_eng_verb_present': 'Verbs_KR->ENG::present',
+    'kr_to_eng_verb_past': 'Verbs_KR->ENG::past',
+    'kr_to_eng_verb_future': 'Verbs_KR->ENG::future',
+    'kr_to_eng_verb_request_tense': 'Verbs_KR->ENG::request',
+    'kr_to_eng_verb_negative_request_tense': 'Verbs_KR->ENG::negative_request',
+    'kr_to_eng_verb_suggestion_tense': 'Verbs_KR->ENG::suggestion',
+    'kr_to_eng_verb_negation_past_tense': 'Verbs_KR->ENG::negation_past',
+    'kr_to_eng_verb_negation_present_tense': 'Verbs_KR->ENG::negation_present',
+    'kr_to_eng_verb_negation_future_tense': 'Verbs_KR->ENG::negation_future',
+    'eng_to_kr': 'Korean_Vocab_ENG->KR',
+    'kr_to_eng': 'Korean_Vocab_KR->ENG',
 }
 
 TENSE_MAP = {

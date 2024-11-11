@@ -1,90 +1,92 @@
-.scrollable-content {
-    overflow-y: auto;  /* Enables vertical scrolling */
-    padding: 10px;     /* Optional: Adds some padding */
-    border: 1px solid #ccc; /* Optional: Adds a border */
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: visible;
+/* Prevent horizontal scrolling */
+.card, div, p, span, .cloze, h1, h2, h3, .title {
+    max-width: 100%;
+    overflow-x: hidden;
+    word-wrap: break-word; /* Ensure content wraps instead of overflowing */
 }
 
-p {
-  font-family: Roboto, sans-serif;
-  margin: 0;
-  white-space: pre-wrap;
-  font-size: 28px;
-}
 
 body {
-  -webkit-text-size-adjust: 100%; /* Prevents text       scaling on iOS */
+    -webkit-text-size-adjust: 100%; /* Prevents text scaling on iOS */
 }
 
+/* Flexbox container layout */
 .container {
-  display: flex;
-  flex-direction: column; /* Stack the rows vertically */
-  gap: 20px; /* Add some space between rows */
-  border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-bottom: 1px solid #ddd;
 }
 
+/* Flexbox row layout */
 .row {
-  display: flex;
-  gap: 10px; /* Add space between items inside the row */
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
 }
 
-.row-1 {
-  justify-content: flex-start; /* Align items to the left */
+/* Center items in row-1 and row-2 */
+.row-1, .row-2 {
+    justify-content: center;
 }
 
-.row-2 {
-  justify-content: center; /* Align item to the left */
+/* Text styling */
+p, .title_text, .reg_text, .section_text, .translation_text, .template_box, .empty_text {
+    font-family: Roboto, sans-serif;
+    font-size: medium;
 }
 
 .title_text {
-  font-family: Roboto, sans-serif;
-  font-size: large;
-  padding: 10px 10px 10px 10px;
-  justify-content: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 10px;
 }
 
-.reg_text{
-    font-size: medium;
-}
-
-.section_text {
-    font-size: medium;
-}
-
-.translation_text{
+.translation_text {
     font-style: italic;
-    font-size: medium;
 }
 
 .template_container {
-  display: flex;          /* Use flexbox */
-  flex-wrap: wrap;        /* Allow items to wrap onto new lines */
-  justify-content: flex-start; /* Align items to the left */
-  width: 50vw;            /* Container takes up 50% of the viewport width */
-  padding: 10px;
-  box-sizing: border-box; /* Include padding in the width/height calculation */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: 50vw;
+    padding: 10px;
+    box-sizing: border-box;
 }
-  
-  /* Style for the individual boxes */
+
+/* Template box styling */
 .template_box {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
-  font-family: Roboto, sans-serif;
-  font-size: small;
-  font-weight: bold;
-  color: black;
-  display: inline-block;  /* Ensure boxes take up only as much space as their content */
-  width: 100%;             
-  white-space: nowrap;     /* Prevent text wrapping inside the box */
-  background-color: rgb(189, 189, 189);
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: small;
+    font-weight: bold;
+    color: black;
+    display: inline-block;
+    background-color: rgb(189, 189, 189);
+    white-space: nowrap;
+    word-wrap: break-word;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 600px) {
+    .template_box {
+        width: auto;
+        margin: 0;
+    }
 }
 
 .template_container::after {
-  content: '';
-  display: block;
-  visibility: hidden;
-  width: max-content;  /* Ensures the width is based on the longest text */
+    content: '';
+    display: block;
+    visibility: hidden;
+    width: max-content;
+}
+
+.empty_text {
+    font-size: medium;
+    color: gray;
 }

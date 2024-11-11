@@ -20,22 +20,49 @@
         
     </div>
 
-  
-    
     <p class="section_text"><strong>Description:</strong></p>
+    {{#description}}
     <p class="reg_text">{{description}}</p>
+    {{/description}}
+    {{^description}}
+    <p class="empty_text">-</p>
+    {{/description}}
     </br>
+
     <p class="section_text"><strong>Examples:</strong></p>
+    {{#exampleSentences}}
     <p class="reg_text">{{exampleSentences}}</p>
+    {{/exampleSentences}}
+    {{^exampleSentences}}
+    <p class="empty_text">-</p>
+    {{/exampleSentences}}
     </br>
+
     <p class="section_text"><strong>Exceptions:</strong></p>
+    {{#exceptions}}
     <p class="reg_text">{{exceptions}}</p>
+    {{/exceptions}}
+    {{^exceptions}}
+    <p class="empty_text">-</p>
+    {{/exceptions}}
     </br>
+
     <p class="section_text"><strong>Formality/Politeness:</strong></p>
+    {{#formalPolite}}
     <p class="reg_text">{{formalPolite}}</p>
+    {{/formalPolite}}
+    {{^formalPolite}}
+    <p class="empty_text">-</p>
+    {{/formalPolite}}
     </br>
+
     <p class="section_text"><strong>Additional Notes:</strong></p>
+    {{#additionalNotes}}
     <p class="reg_text">{{additionalNotes}}</p>
+    {{/additionalNotes}}
+    {{^additionalNotes}}
+    <p class="empty_text">-</p>
+    {{/additionalNotes}}
 
 </div>
 <link rel="stylesheet" href="../style.css">

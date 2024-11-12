@@ -3,13 +3,13 @@ from aqt.utils import showInfo
 from aqt.qt import *
 from aqt.qt import QAction
 # utils has been added to sys.path
-from utils import getKoreanVocabNotes 
+from utils import getNotesFromNoteType, VOCAB, GRAMMAR
 
 
 def add_pks_to_all_notes():
     # Specify the name of the note type you want to update
     field_name = "pk"  # The field to store the note ID
-    notes = getKoreanVocabNotes()
+    notes = getNotesFromNoteType(VOCAB) + getNotesFromNoteType(GRAMMAR)
 
     for note in notes:
         if field_name in note:

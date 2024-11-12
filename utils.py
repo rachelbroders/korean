@@ -61,9 +61,9 @@ current_directory = os.path.dirname(__file__)
 DEFAULT_VENV_EXE = os.path.abspath(os.path.join(current_directory, venv_name, 'Scripts', 'python.exe'))
 
 
-def getKoreanVocabNotes():
+def getNotesFromNoteType(note_type):
     # Get the model (note type) ID
-    model = getNoteType(VOCAB)
+    model = getNoteType(note_type)
     model_id = model['id']
 
     # Get all notes of the specified note type
@@ -71,7 +71,6 @@ def getKoreanVocabNotes():
         f"SELECT id FROM notes WHERE mid = {model_id}"
     )
     return [mw.col.getNote(nid) for nid in note_ids]
-
 
 def getCardTypesFromNoteType(note_type):
     # Get the model (note type) ID

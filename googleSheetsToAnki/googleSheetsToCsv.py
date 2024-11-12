@@ -5,11 +5,11 @@ import sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, parent_dir)
 
-from venv_utils import get_sheet, SPREADSHEET_ID, DATASHEET, ScriptError, CSV_FILE
+from venv_utils import get_sheets, SPREADSHEET_ID, DATASHEET, ScriptError, CSV_FILE
   
 
 def get_google_sheets_data():
-    sheet = get_sheet()
+    sheet = get_sheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=DATASHEET).execute()
     values = result.get('values', [])
     return values

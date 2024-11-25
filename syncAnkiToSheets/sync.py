@@ -7,7 +7,7 @@ import os, sys
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, parent_dir)
 
-from venv_utils import SPREADSHEET_ID, DATASHEET, DATASHEET, get_sheet
+from venv_utils import SPREADSHEET_ID, DATASHEET_VOCAB, DATASHEET_GRAMMAR, get_sheets
 
 
 # AnkiConnect API setup
@@ -42,6 +42,8 @@ def get_field_names(note_type):
 # Function to strip HTML tags and decode entities
 def normalize_text(text):
     soup = BeautifulSoup(text, 'html.parser')
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
     return soup.get_text()
 
 
@@ -58,29 +60,34 @@ def process_anki_notes(notes_data, fields):
     return df
  
 
-def upload_to_sheets(df, sheet):
-    dup = "#Duplicates"
-    duplicates_col_index = df.columns.get_loc(dup)
-
-    # Select data to the left and right of the duplicates column
-    left_values = df.iloc[:, :duplicates_col_index].values.tolist()   # Get left column values
-    right_values = df.iloc[:, duplicates_col_index + 1:].values.tolist()   # Get left column values
- 
-    # Figure out where the duplicates column is in the spreadsheet
-    header = get_header(sheet)
-    if dup in header:
-        column_index = header.index(dup) + 1  # +1 for 1-based index
+def upload_to_sheets(df, sheets, DATASHEET, ignore_column=None):
+    if ignore_column:
+        ignore_col_index = df.columns.get_loc(ignore_column)
+        # Select data to the left and right of the ignored column
+        left_values = df.iloc[:, :ignore_col_index].values.tolist()   # Get left column values
+        right_values = df.iloc[:, ignore_col_index + 1:].values.tolist()   # Get left column values
+        range = create_sheet_range_w_ignore_column(sheets, DATASHEET, ignore_column)
+        update_sheet(sheets, left_values, range['left'])
+        update_sheet(sheets, right_values, range['right'])
     else:
-        raise ValueError(f"Column {dup} not found in the header.".format(dup))
+        values = df.values.tolist()
+        update_sheet(sheets, values, f"{DATASHEET}!A2:ZZZ")
+
+def create_sheet_range_w_ignore_column(sheets, DATASHEET, ignore_column):
+    # Figure out where the ignored column is in the spreadsheet
+    header = get_header(sheets, DATASHEET)
+    if ignore_column in header:
+        column_index = header.index(ignore_column) + 1  # +1 for 1-based index
+    else:
+        raise ValueError(f"Column {ignore_column} not found in the header.".format(ignore_column))
     
-    # create spreadsheet ranges to the left and right of the duplicates column
+    # create spreadsheet ranges to the left and right of the ignored column
     left_range = f"{DATASHEET}!A2:{index_to_column_letter(column_index-1)}"
     print("left range: {0}".format(left_range))
     right_range = f"{DATASHEET}!{index_to_column_letter(column_index+1)}2:{index_to_column_letter(len(header))}"
     print("right range: {0}".format(right_range))
-    
-    update_sheet(sheet, left_values, left_range)
-    update_sheet(sheet, right_values, right_range)
+
+    return {'left': left_range, 'right': right_range}
 
 
 def index_to_column_letter(index):
@@ -93,11 +100,11 @@ def index_to_column_letter(index):
     return letter
 
 
-def update_sheet(sheet, values, range):
+def update_sheet(sheets, values, range):
     body = {
         'values': values
     }
-    result = sheet.values().update(
+    result = sheets.values().update(
         spreadsheetId=SPREADSHEET_ID,
         range=range,
         valueInputOption='RAW',
@@ -106,7 +113,7 @@ def update_sheet(sheet, values, range):
     print('{0} cells updated.'.format(result.get('updatedCells')))
 
 
-def get_header(sheet):
+def get_header(sheet, DATASHEET):
     header_response = sheet.values().get(
         spreadsheetId=SPREADSHEET_ID,
         range=DATASHEET
@@ -115,15 +122,14 @@ def get_header(sheet):
     header = header_response.get('values', [])[0]  # Get the first row as header
     return header 
 
-def sync_from_anki_to_sheets():
-    # Fetch cards data from Anki
-    note_type = "KoreanVocab"
+def sync_from_anki_to_sheets(note_type, DATASHEET, ignore_column=None):
     fields = get_field_names(note_type)
     notes_data = get_all_notes(note_type)
     df = process_anki_notes(notes_data, fields)
-    sheet = get_sheet()
-    upload_to_sheets(df, sheet)
+    sheets = get_sheets()
+    upload_to_sheets(df, sheets, DATASHEET, ignore_column)
 
 
 if __name__ == "__main__":
-    sync_from_anki_to_sheets()
+    sync_from_anki_to_sheets("KoreanVocab", DATASHEET_VOCAB, ignore_column="#Duplicates")
+    sync_from_anki_to_sheets("KoreanGrammar", DATASHEET_GRAMMAR) 
